@@ -45,12 +45,12 @@ struct Mesh
         const float T = 300.0f;
         const float eps = 1e-10;
 
-        for (int zNum = 0; zNum < zSize; ++zNum)
-            for (int yNum = 0; yNum < ySize; ++yNum)
+        for (int zNum = 0; zNum < 3 * zSize; ++zNum)
+            for (int yNum = 0; yNum < 3 * ySize; ++yNum)
                 for (int xNum = 0; xNum < xSize; ++xNum) {
                     points.push_back(new Point(3 * l * xNum + l * (yNum % 2 + zNum % 2) / 2,         
                         std::sqrt(3) * l * (yNum + zNum % 2) / 2, l * zNum, n, T));
-                    points.push_back(new Point(3 * l * xNum + l * (yNum % 2 + zNum % 2) / 2 + 2 * l, 
+                    points.push_back(new Point(3 * l * xNum + l * (yNum % 2 + zNum % 2) / 2 + (2 - yNum % 2) * l,
                         std::sqrt(3) * l * (yNum + zNum % 2) / 2, l * zNum, n, T));
                 }
 
