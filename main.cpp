@@ -48,8 +48,10 @@ struct Mesh
         for (int zNum = 0; zNum < zSize; ++zNum)
             for (int yNum = 0; yNum < ySize; ++yNum)
                 for (int xNum = 0; xNum < xSize; ++xNum) {
-                    points.push_back(new Point(3 * l * xNum + l * (yNum % 2 + zNum % 2) / 2,     std::sqrt(3) * l * (yNum + zNum % 2) / 2, l * zNum, n, T));
-                    points.push_back(new Point(3 * l * xNum + l * (yNum % 2 + zNum % 2) / 2 + l, std::sqrt(3) * l * (yNum + zNum % 2) / 2, l * zNum, n, T));
+                    points.push_back(new Point(3 * l * xNum + l * (yNum % 2 + zNum % 2) / 2,         
+                        std::sqrt(3) * l * (yNum + zNum % 2) / 2, l * zNum, n, T));
+                    points.push_back(new Point(3 * l * xNum + l * (yNum % 2 + zNum % 2) / 2 + 2 * l, 
+                        std::sqrt(3) * l * (yNum + zNum % 2) / 2, l * zNum, n, T));
                 }
 
         for (int p1 = 0; p1 < points.size(); ++p1)
@@ -61,7 +63,14 @@ struct Mesh
     }
 };
 
-void snapshot(int snap_number, std::vector<Point> points)
+std::vector<Point*> extract_keys(std::map<Point*, std::vector<Point*>> const& input_map) {
+    std::vector<Point*> retval;
+    for (auto const& element : input_map)
+        retval.push_back(element.first);   
+    return retval;
+}
+
+void snapshot(int snap_number, std::vector<Point*> points)
 {
     vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     vtkSmartPointer<vtkPoints> dumpPoints = vtkSmartPointer<vtkPoints>::New();
@@ -72,14 +81,15 @@ void snapshot(int snap_number, std::vector<Point> points)
     auto is_freezed = vtkSmartPointer<vtkDoubleArray>::New();
     is_freezed->SetName("state");
     for(unsigned int i = 0; i < points.size(); i++) {
-        dumpPoints->InsertNextPoint(points[i].x, points[i].y, points[i].z);
-        n->InsertNextValue(points[i].n);
-        T->InsertNextValue(points[i].T);
-        is_freezed->InsertNextValue(double(points[i].is_freezed));
+        dumpPoints->InsertNextPoint(points[i]->x, points[i]->y, points[i]->z);
+        n->InsertNextValue(points[i]->n);
+        T->InsertNextValue(points[i]->T);
+        is_freezed->InsertNextValue(double(points[i]->is_freezed));
     }
     unstructuredGrid->SetPoints(dumpPoints);
     unstructuredGrid->GetPointData()->AddArray(n);
     unstructuredGrid->GetPointData()->AddArray(T);
+    unstructuredGrid->GetPointData()->AddArray(is_freezed);
 
     // А теперь пишем, как наши точки объединены в тетраэдры
     // for(unsigned int i = 0; i < elements.size(); i++) {
@@ -101,6 +111,8 @@ void snapshot(int snap_number, std::vector<Point> points)
 int main()
 {
     Mesh* mesh = new Mesh(10, 10, 10);
+    
+    snapshot(0, extract_keys(mesh->neighbors));
 
     return 0;
 }
