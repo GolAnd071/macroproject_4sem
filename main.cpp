@@ -13,15 +13,43 @@
 #include <vtkSmartPointer.h>
 #include <string>
 
+
 struct Point
 {
     float x, y, z; // coordinates
 
     float n, T; // physical params
 
-    bool is_freezed = false;
+private:
+    // state params
+    // "meltable" control what is represented: water particle or heterogeneous crystallization center (seed)
+    // to prevent seed from being melt "meltable" and "freezed" are incapsulated with methods below
+    bool freezed = false, meltable = false;
 
+public:
     Point(float x, float y, float z, float n, float T) : x(x), y(y), z(z), n(n), T(T) {}
+
+    bool is_freezed()
+    {
+        return freezed;
+    }
+
+    void freeze()
+    {
+        freezed = true;
+    }
+
+    void melt()
+    {
+        if (!meltable)
+            freezed = false;
+    }
+
+    void seed()
+    {
+        meltable = true;
+        freezed = true;
+    }
 };
 
 float dist(Point* p1, Point* p2)
@@ -31,6 +59,7 @@ float dist(Point* p1, Point* p2)
     float dz = p1->z - p2->z;
     return std::sqrt(dx * dx + dy * dy + dz * dz);
 }
+
 
 struct Mesh
 {
@@ -74,8 +103,9 @@ std::vector<Point*> extract_keys(std::map<Point*, std::vector<Point*>> const& in
     return retval;
 }
 
-void snapshot(int snap_number, std::vector<Point*> points)
+void snapshot(int snap_number, Mesh* mesh)
 {
+    std::vector<Point*> points = extract_keys(mesh->neighbors);
     vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     vtkSmartPointer<vtkPoints> dumpPoints = vtkSmartPointer<vtkPoints>::New();
     auto n = vtkSmartPointer<vtkDoubleArray>::New();
@@ -88,7 +118,7 @@ void snapshot(int snap_number, std::vector<Point*> points)
         dumpPoints->InsertNextPoint(points[i]->x, points[i]->y, points[i]->z);
         n->InsertNextValue(points[i]->n);
         T->InsertNextValue(points[i]->T);
-        is_freezed->InsertNextValue(double(points[i]->is_freezed));
+        is_freezed->InsertNextValue(double(points[i]->is_freezed()));
     }
     unstructuredGrid->SetPoints(dumpPoints);
     unstructuredGrid->GetPointData()->AddArray(n);
@@ -112,11 +142,25 @@ void snapshot(int snap_number, std::vector<Point*> points)
     writer->Write();
 }
 
-int main()
+
+int main(int argc, char** argv)
 {
     Mesh* mesh = new Mesh(5, 5, 1);
+    extract_keys(mesh->neighbors).at(mesh->neighbors.size()/2)->seed();
     
-    snapshot(0, extract_keys(mesh->neighbors));
+    int iterations = 0;
+    // int iterations = 1000;
+    if (argc > 1)
+        iterations = atoi(argv[1]);
+
+    snapshot(0, mesh);
+    for (int i = 1; i <= iterations; i++)
+    {
+        // mesh traversal to freeze and melt
+        // mesh traversal to calculate concentration gradient
+        // mesh traversal to update concentration
+        snapshot(i, mesh);
+    }
 
     return 0;
 }
