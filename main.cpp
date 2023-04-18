@@ -48,10 +48,14 @@ struct Mesh
         for (int zNum = 0; zNum < 3 * zSize; ++zNum)
             for (int yNum = 0; yNum < 3 * ySize; ++yNum)
                 for (int xNum = 0; xNum < xSize; ++xNum) {
-                    points.push_back(new Point(3 * l * xNum + l * (yNum % 2 + zNum % 2) / 2,         
-                        std::sqrt(3) * l * (yNum + zNum % 2) / 2, l * zNum, n, T));
-                    points.push_back(new Point(3 * l * xNum + l * (yNum % 2 + zNum % 2) / 2 + (2 - yNum % 2) * l,
-                        std::sqrt(3) * l * (yNum + zNum % 2) / 2, l * zNum, n, T));
+                    points.push_back(new Point( 3 * l * xNum + l * (yNum % 2 + zNum % 2) / 2                        -3*xSize/2,         
+                                                std::sqrt(3) * l * (yNum + zNum % 2) / 2                            -3*ySize/2, 
+                                                l * zNum                                                            -3*zSize/2
+                                                , n, T));
+                    points.push_back(new Point( 3 * l * xNum + l * (yNum % 2 + zNum % 2) / 2 + (2 - yNum % 2) * l   -3*xSize/2,
+                                                std::sqrt(3) * l * (yNum + zNum % 2) / 2                            -3*ySize/2, 
+                                                l * zNum                                                            -3*zSize/2
+                                                , n, T));
                 }
 
         for (int p1 = 0; p1 < points.size(); ++p1)
@@ -110,7 +114,7 @@ void snapshot(int snap_number, std::vector<Point*> points)
 
 int main()
 {
-    Mesh* mesh = new Mesh(10, 10, 10);
+    Mesh* mesh = new Mesh(5, 5, 1);
     
     snapshot(0, extract_keys(mesh->neighbors));
 
