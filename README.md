@@ -1,5 +1,7 @@
 # macroproject_4sem
 
+This is our final project for college course and we are going to simulate the formation of a snowflake.
+
 To view the generated snapshots:
 1) import crystal-step-_.vtu into ParaView
 2) generate glyph
