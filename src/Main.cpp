@@ -36,6 +36,8 @@ int main(int argc, char** argv)
 
         std::queue<Point*> hasLoan;
 
+        std::vector<Point*> wantFreeze, wantMelt;
+
         // mesh traversal to freeze and melt
         for (Point* point : arrPoints) {
             float prob = random();
@@ -48,7 +50,7 @@ int main(int argc, char** argv)
                         ++countVapor;
 
                 if (countVapor > 0 && prob > Params::MeltP(point))
-                    point->Melt();
+                    wantMelt.push_back(point);
 
             } else {
                 int countIce = 0;
@@ -58,11 +60,21 @@ int main(int argc, char** argv)
                         ++countIce;
 
                 if (countIce * prob > Params::FreezeP(point)) {
-                    point->Freeze();
-                    point->n -= Params::IceN();
+                    wantFreeze.push_back(point);
+                    
                     hasLoan.push(point);
                 }
             }
+        }
+
+        for (auto point : wantFreeze) {
+            point->Freeze();
+            point->n -= Params::IceN();
+        }
+
+        for (auto point : wantMelt) {
+            point->Melt();
+            point->n += Params::IceN();
         }
 
         std::unordered_set<Point*> visited;
