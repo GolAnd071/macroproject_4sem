@@ -79,3 +79,7 @@ void Params::Heat(Point* p, float heat) {
     else
         p->T += This()->m_vapor_C0 * p->n * heat;
 }
+
+void Params::Diffuse(Point* p, float conc) {
+    p->n += conc;
+}

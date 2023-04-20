@@ -44,4 +44,6 @@ public:
 
     // heat point, chaning its tempurature
     static void Heat(Point* p, float heat);
+    // duffuse point, changing its concentration
+    static void Diffuse(Point* p, float conc);
 };

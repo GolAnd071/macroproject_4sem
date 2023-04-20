@@ -10,9 +10,8 @@ namespace Utility {
         return retval;
     }
 
-    void Snapshot(int snap_number, Mesh* mesh)
+    void Snapshot(int snap_number, std::vector<Point*> points)
     {
-        std::vector<Point*> points = ExtractKeys(mesh->neighbors);
         vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
         vtkSmartPointer<vtkPoints> dumpPoints = vtkSmartPointer<vtkPoints>::New();
         auto n = vtkSmartPointer<vtkDoubleArray>::New();
@@ -42,7 +41,7 @@ namespace Utility {
         //     unstructuredGrid->InsertNextCell(tetra->GetCellType(), tetra->GetPointIds());
         // }
 
-        std::string fileName = "crystal-step-" + std::to_string(snap_number) + ".vtu";
+        std::string fileName = "result/crystal-step-" + std::to_string(snap_number) + ".vtu";
         vtkSmartPointer<vtkXMLUnstructuredGridWriter> writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
         writer->SetFileName(fileName.c_str());
         writer->SetInputData(unstructuredGrid);
