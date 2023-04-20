@@ -11,4 +11,4 @@ To view the generated snapshots:
 6) set coloring array to view the destribution of concentration or tempurature
 
 Finally it should look like this:
-![alt text](https://github.com/GolAnd071/macroproject_4sem/blob/master/mesh.png?raw=true)
+![alt text](https://github.com/GolAnd071/macroproject_4sem/blob/master/Resources/Images/Mesh.png?raw=true)
