@@ -36,9 +36,10 @@ To do this follow the instruction below:
 1) Import `crystal-step-_.vtu` into ParaView
 2) Apply filter "Glyph"
 3) Set "Sphere" glyph type
-4) Set appropriate scale (e.g. 0.5)
-5) Set "state" as scale array if you want to view only frozen nodes.
-6) Set coloring array to view the distribution of concentration or tempurature
+4) Set glyph mode to "All points"
+5) Set appropriate scale (e.g. 0.5)
+6) Set "state" as scale array if you want to view only frozen nodes
+7) Set coloring array to view the distribution of concentration or tempurature
 
 Finally it should look like this:
 
