@@ -1,0 +1,16 @@
+{
+    "INITIAL_T": 273,
+    "INITIAL_n": 1,
+
+    "FREEZE_P0": 0.3,
+    "MELT_P0": 0,
+    "ICE_N": 5, 
+
+    "VAPOR_D0": 1,
+    "VAPOR_K0": 0,
+    "ICE_K0": 0,
+    "TRANS_K0": 0,
+
+    "VAPOR_C0": 1,
+    "ICE_C0": 1
+}
