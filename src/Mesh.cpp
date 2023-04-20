@@ -4,8 +4,6 @@
 
 Mesh::Mesh(int xSize, int ySize, int zSize, float n, float T)
 {
-    std::vector<Point*> points;
-
     const float l = 1.0f;
     const float eps = 1e-10;
 
@@ -21,6 +19,8 @@ Mesh::Mesh(int xSize, int ySize, int zSize, float n, float T)
                                             l * zNum                                                            - 3 * zSize / 2
                                             , n, T));
             }
+
+    size = points.size();
 
     for (int p1 = 0; p1 < points.size(); ++p1)
         for (int p2 = p1 + 1; p2 < points.size(); ++p2)

@@ -15,8 +15,6 @@
 
 namespace Utility {
 
-    std::vector<Point*> ExtractKeys(std::map<Point*, std::vector<Point*>> const& input_map);
-
     void Snapshot(int snap_number, Mesh* mesh);
 
 }
