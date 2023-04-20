@@ -38,6 +38,7 @@ int main(int argc, char** argv)
 
         std::vector<Point*> wantFreeze, wantMelt;
 
+
         // mesh traversal to freeze and melt
         for (Point* point : arrPoints) {
             float prob = random();
@@ -49,7 +50,7 @@ int main(int argc, char** argv)
                     if (!neighbor->IsFreezed())
                         ++countVapor;
 
-                if (countVapor > 0 && prob > Params::MeltP(point))
+                if (countVapor > 0 && prob < Params::MeltP(point))
                     wantMelt.push_back(point);
 
             } else {
@@ -59,7 +60,7 @@ int main(int argc, char** argv)
                     if (neighbor->IsFreezed())
                         ++countIce;
 
-                if (countIce * prob > Params::FreezeP(point)) {
+                if (prob < Params::FreezeP(point) * countIce) {
                     wantFreeze.push_back(point);
                     
                     hasLoan.push(point);
@@ -78,6 +79,7 @@ int main(int argc, char** argv)
         }
 
         std::unordered_set<Point*> visited;
+
 
         // mesh traversal to fulfill concentration loan after freezing
         while (hasLoan.size() != 0) {
@@ -101,6 +103,7 @@ int main(int argc, char** argv)
 
         std::map<Point*, float> deltaN, deltaH;
 
+
         // mesh traversal to calculate concentration and temperature flow for each edge
         for (Point* point : arrPoints) {
             float dN = 0, dH = 0;
@@ -114,6 +117,7 @@ int main(int argc, char** argv)
             deltaH[point] = dH;
         }
         
+
         // mesh traversal to update concentration and temperature
         for (Point* point : arrPoints) {
             Params::Diffuse(point, deltaN[point]);
