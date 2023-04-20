@@ -8,7 +8,7 @@
 
 int main(int argc, char** argv)
 {
-    Mesh* mesh = new Mesh(5, 5, 5);
+    Mesh* mesh = new Mesh(5, 5, 5, Params::n(), Params::T());
     Utility::ExtractKeys(mesh->neighbors).at(mesh->neighbors.size() / 2)->Seed();
     
     int iter_num = 0;

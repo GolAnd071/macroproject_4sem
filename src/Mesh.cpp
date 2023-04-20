@@ -2,13 +2,11 @@
 
 #include <cmath>
 
-Mesh::Mesh(int xSize, int ySize, int zSize)
+Mesh::Mesh(int xSize, int ySize, int zSize, float n, float T)
 {
     std::vector<Point*> points;
 
     const float l = 1.0f;
-    const float n = 1.0f;
-    const float T = 300.0f;
     const float eps = 1e-10;
 
     for (int zNum = 0; zNum < 3 * zSize; ++zNum)
