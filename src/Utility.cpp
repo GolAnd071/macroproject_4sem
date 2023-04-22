@@ -25,6 +25,7 @@ namespace Utility {
         unstructuredGrid->GetPointData()->AddArray(T);
         unstructuredGrid->GetPointData()->AddArray(is_freezed);
 
+        std::filesystem::create_directories("result");
         std::string fileName = "result/crystal-step-" + std::to_string(snap_number) + ".vtu";
         vtkSmartPointer<vtkXMLUnstructuredGridWriter> writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
         writer->SetFileName(fileName.c_str());

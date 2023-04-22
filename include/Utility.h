@@ -1,6 +1,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <filesystem>
 
 #include <vtkDoubleArray.h>
 #include <vtkPoints.h>
