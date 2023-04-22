@@ -5,12 +5,8 @@
 #include <cmath>
 #include <fstream>
 
-std::map<Point*, std::vector<Point*>> neighbors;
-
 Mesh::Mesh(int nx, int ny, int nz, float n, float T) {
     Init();
-
-    std::vector<Point*> points;
 
     for (int i = 0; i < nx; ++i)
         for (int j = 0; j < ny; ++j)
@@ -32,8 +28,10 @@ Mesh::Mesh(int nx, int ny, int nz, float n, float T) {
         point->z = aVec.z * old_x + bVec.z * old_y + cVec.z * old_z;
     }
 
-    for (int p1 = 0; p1 < points.size(); ++p1)
-        for (int p2 = p1 + 1; p2 < points.size(); ++p2)
+    size = points.size();
+
+    for (int p1 = 0; p1 < size; ++p1)
+        for (int p2 = p1 + 1; p2 < size; ++p2)
             if (std::abs(points[p1]->Dist(points[p2]) - m_l) < m_eps) {
                 neighbors[points[p1]].push_back(points[p2]);
                 neighbors[points[p2]].push_back(points[p1]);

@@ -12,12 +12,8 @@
 int main(int argc, char** argv)
 {
     Mesh* mesh = new Mesh(5, 5, 5, Params::n(), Params::T());
-
-    size_t numPoints = mesh->neighbors.size();
-
-    auto arrPoints = Utility::ExtractKeys(mesh->neighbors);
-
-    Utility::ExtractKeys(mesh->neighbors).at(numPoints / 2)->Seed();
+    mesh->points.at(mesh->size/2)->Seed();
+    Utility::Snapshot(0, mesh);
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -28,19 +24,16 @@ int main(int argc, char** argv)
     if (argc > 1)
         iter_num = atoi(argv[1]);
 
-    Utility::Snapshot(0, arrPoints);
+    std::cout << "Simulaiton started.\n";
 
     for (int iter = 1; iter <= iter_num; ++iter) {
 
-        std::cout << "Iteration " << iter << " started.\n";
+        // mesh traversal to freeze and melt
 
         std::queue<Point*> hasLoan;
-
         std::vector<Point*> wantFreeze, wantMelt;
 
-
-        // mesh traversal to freeze and melt
-        for (Point* point : arrPoints) {
+        for (Point* point : mesh->points) {
             float prob = random();
 
             if (point->IsFreezed()) {
@@ -60,17 +53,15 @@ int main(int argc, char** argv)
                     if (neighbor->IsFreezed())
                         ++countIce;
 
-                if (prob < Params::FreezeP(point) * countIce) {
+                if (prob < Params::FreezeP(point) * countIce)
                     wantFreeze.push_back(point);
-                    
-                    hasLoan.push(point);
-                }
             }
         }
 
         for (auto point : wantFreeze) {
             point->Freeze();
             point->n -= Params::IceN();
+            hasLoan.push(point);
         }
 
         for (auto point : wantMelt) {
@@ -78,20 +69,22 @@ int main(int argc, char** argv)
             point->n += Params::IceN();
         }
 
-        std::unordered_set<Point*> visited;
 
 
         // mesh traversal to fulfill concentration loan after freezing
+
+        std::unordered_set<Point*> fulfilledLoan;
+
         while (hasLoan.size() != 0) {
             Point* point = hasLoan.front();
             hasLoan.pop();
-            visited.insert(point);
+            fulfilledLoan.insert(point);
 
             if (point->n < 0) {
                 int num = mesh->neighbors[point].size();
 
                 for (Point* neighbor : mesh->neighbors[point]) {
-                    if (visited.count(neighbor))
+                    if (fulfilledLoan.count(neighbor))
                         continue;
                     neighbor->n -= point->n / num;
                     hasLoan.push(neighbor);
@@ -101,11 +94,12 @@ int main(int argc, char** argv)
             }
         }
 
-        std::map<Point*, float> deltaN, deltaH;
-
 
         // mesh traversal to calculate concentration and temperature flow for each edge
-        for (Point* point : arrPoints) {
+
+        std::map<Point*, float> deltaN, deltaH;
+
+        for (Point* point : mesh->points) {
             float dN = 0, dH = 0;
 
             for (Point* neighbor : mesh->neighbors[point]) {
@@ -119,14 +113,15 @@ int main(int argc, char** argv)
         
 
         // mesh traversal to update concentration and temperature
-        for (Point* point : arrPoints) {
+
+        for (Point* point : mesh->points) {
             Params::Diffuse(point, deltaN[point]);
             Params::Heat(point, deltaH[point]);
         }
 
-        Utility::Snapshot(iter, arrPoints);
-
-        std::cout << "Iteration " << iter << " ended.\n";
+        Utility::Snapshot(iter, mesh);
+        
+        std::cout << "Iteration " << iter << " finished.\n";
     }
 
     return 0;

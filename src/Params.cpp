@@ -3,18 +3,19 @@
 #include "json/json.hpp"
 
 #include <fstream>
+#include <cmath>
 
 Params::Params()
 {
     std::ifstream f(m_path);
     nlohmann::json params = nlohmann::json::parse(f);
-
+    
+    //simulation parameters
     m_initial_T = params["INITIAL_T"];
-    m_initial_n = params["INITIAL_n"];
+    m_initial_n = params["INITIAL_n"]; //n of saturated steam
 
     m_freeze_P0 = params["FREEZE_P0"];
     m_melt_P0 = params["MELT_P0"];
-    m_ice_N = params["ICE_N"];
 
     m_vapor_D0 = params["VAPOR_D0"];
     m_vapor_K0 = params["VAPOR_K0"];
@@ -23,6 +24,22 @@ Params::Params()
 
     m_vapor_C0 = params["VAPOR_C0"];
     m_ice_C0 = params["ICE_C0"];
+
+    // FIXME(Ivan): Add definitions!
+    /*
+    m_cell_distance = params["CELL_DISTANCE"];
+    m_cell_area = sqrt(3) / 4 * std::pow(m_cell_distance);
+    m_cell_volume = 1 / (6 std::sqrt(2)) * std::pow(m_cell_distance, 3);
+
+    m_surf_area = params["SURF_AREA"]
+
+    //physical constants
+    m_ice_N = params["ICE_N"];
+
+    m_terrace_step_energy = params["TERRACE_STEP_ENERGY"];
+
+    m_k_boltzmann = params["K_BOLTZMANN"];
+    */
 }
 
 Params* Params::This()
@@ -43,6 +60,12 @@ float Params::n()
 
 float Params::FreezeP(Point* p)
 {
+    // FIXME(Ivan): Add definitions!
+    /*
+    float prob;
+    prob = (p->n) / (This->m_ice_N) * (m_cell_area * m_terrace_step_energy * m_terrace_step_energy) 
+    / (std::pow(This->m_k_boltzmann, 2) * std::pow(p->T, 2));
+    */
     return This()->m_freeze_P0;
 }
 
