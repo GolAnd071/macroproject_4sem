@@ -8,6 +8,16 @@ The aim of the project: to simulate the process of snowflake formation.
 
 ## Installation and running
 
+<ins>**0. Requirements:**</ins>
+
+Our project requires [VTK](https://vtk.org) to make snapshots.
+
+You can find installation instructions [for Linux](https://github.com/GolAnd071/inf_4sem/tree/master/lib_instrustion#vtk) and [for Windows](https://gitlab.kitware.com/vtk/vtk/-/blob/bb416fcc20ddffdbde9d92f8a372ce9215087c13/Documentation/dev/build_windows_vs.md).
+
+Besides, we used [ParaView](https://www.paraview.org) to watch snapshots.
+
+You can install it [from offisial website](https://www.paraview.org/download/) or to use your package manager (for Linux).
+
 <ins>**1. Download the repository:**</ins>
 
 ```
@@ -16,6 +26,8 @@ git clone https://github.com/GolAnd071/macroproject_4sem
 
 <ins>**2. Build the project:**</ins>
 
+### Linux
+
 ```
 mkdir build
 cd build
@@ -23,10 +35,22 @@ cmake ..
 make
 ```
 
+### Windows
+
+You may use CMake for Windows to configure project for Visual Studio and then build it from IDE.
+
 <ins>**3. Run the executable with:**</ins>
+
+### Linux
 
 ```
 ./snowflake <number_of_iterations>
+```
+
+### Windows
+
+```
+snowflake.exe <number_of_iterations>
 ```
 
 <ins>**4. View generated snapshots:**</ins>
