@@ -6,7 +6,7 @@
 
 Params::Params()
 {
-    std::ifstream f(path);
+    std::ifstream f(m_path);
     nlohmann::json params = nlohmann::json::parse(f);
 
     m_initial_T = params["INITIAL_T"];

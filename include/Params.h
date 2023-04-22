@@ -3,7 +3,7 @@
 class Params
 {
 private:
-    const char* path = "../params.json";
+    const char* m_path = "../config/params.json";
 
     float m_initial_T;  // initial tempurature
     float m_initial_n;  // initial humidity

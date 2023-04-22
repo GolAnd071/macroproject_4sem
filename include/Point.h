@@ -3,6 +3,8 @@
 class Point
 {
 public:
+    Point(float x, float y, float z) : x(x), y(y), z(z), n(0.0f), T(0.0f) {}
+
     Point(float x, float y, float z, float n, float T) : x(x), y(y), z(z), n(n), T(T) {}
 
     bool IsFreezed();

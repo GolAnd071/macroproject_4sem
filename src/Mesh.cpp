@@ -1,31 +1,77 @@
 #include "Mesh.h"
 
-#include <cmath>
+#include "json/json.hpp"
 
-Mesh::Mesh(int xSize, int ySize, int zSize, float n, float T)
-{
+#include <cmath>
+#include <fstream>
+
+std::map<Point*, std::vector<Point*>> neighbors;
+
+Mesh::Mesh(int nx, int ny, int nz, float n, float T) {
+    Init();
+
     std::vector<Point*> points;
 
-    const float l = 1.0f;
-    const float eps = 1e-10;
+    for (int i = 0; i < nx; ++i)
+        for (int j = 0; j < ny; ++j)
+            for (int k = 0; k < nz; ++k)
+                for (int l = 0; l < m_basicCell.size(); ++l)
+                    points.push_back(new Point(m_basicCell[l].x + i / 3.0f, m_basicCell[l].y + j / 3.0f, m_basicCell[l].z + k / 3.0f, n, T));
 
-    for (int zNum = 0; zNum < 3 * zSize; ++zNum)
-        for (int yNum = 0; yNum < 3 * ySize; ++yNum)
-            for (int xNum = 0; xNum < xSize; ++xNum) {
-                points.push_back(new Point( 3 * l * xNum + l * (yNum % 2 + zNum % 2) / 2                        - 3 * xSize / 2,
-                                            std::sqrt(3) * l * (yNum + zNum % 2) / 2                            - 3 * ySize / 2,
-                                            l * zNum                                                            - 3 * zSize / 2
-                                            , n, T));
-                points.push_back(new Point( 3 * l * xNum + l * (yNum % 2 + zNum % 2) / 2 + (2 - yNum % 2) * l   - 3 * xSize / 2,
-                                            std::sqrt(3) * l * (yNum + zNum % 2) / 2                            - 3 * ySize / 2,
-                                            l * zNum                                                            - 3 * zSize / 2
-                                            , n, T));
-            }
+    Point aVec(m_a, 0.0f, 0.0f);
+    Point bVec(m_b * cosf(m_gamma), m_b * sinf(m_gamma), 0.0f);
+    Point cVec(m_c * cosf(m_beta), m_c * cosf(m_alpha) * sinf(m_gamma), m_c * sqrtf(sinf(m_beta) * sinf(m_beta) - sinf(m_gamma) * sinf(m_gamma) * cosf(m_alpha) * cosf(m_alpha)));
+
+    for (auto& point : points) {
+        auto old_x = point->x;
+        auto old_y = point->y;
+        auto old_z = point->z;
+
+        point->x = aVec.x * old_x + bVec.x * old_y + cVec.x * old_z;
+        point->y = aVec.y * old_x + bVec.y * old_y + cVec.y * old_z;
+        point->z = aVec.z * old_x + bVec.z * old_y + cVec.z * old_z;
+    }
 
     for (int p1 = 0; p1 < points.size(); ++p1)
         for (int p2 = p1 + 1; p2 < points.size(); ++p2)
-            if (std::abs(points[p1]->Dist(points[p2]) - l) < eps) {
+            if (std::abs(points[p1]->Dist(points[p2]) - m_l) < m_eps) {
                 neighbors[points[p1]].push_back(points[p2]);
                 neighbors[points[p2]].push_back(points[p1]);
             }
+}
+
+void Mesh::Init()
+{
+    std::ifstream f(m_path);
+    nlohmann::json grid = nlohmann::json::parse(f);
+
+    m_a = grid["a"];
+    m_b = grid["b"];
+    m_c = grid["c"];
+
+    m_alpha = grid["alpha"];
+    m_beta = grid["beta"];
+    m_gamma = grid["gamma"];
+
+    m_alpha *= M_PI / 180.0f;
+    m_beta *= M_PI / 180.0f;
+    m_gamma *= M_PI / 180.0f;
+
+    m_l = grid["l"];
+    m_eps = grid["eps"];
+
+    m_basicCell = {
+        Point(grid["O1"]["x"],  grid["O1"]["y"],  grid["O1"]["z"]),
+        Point(grid["O2"]["x"],  grid["O2"]["y"],  grid["O2"]["z"]),
+        Point(grid["O3"]["x"],  grid["O3"]["y"],  grid["O3"]["z"]),
+        Point(grid["O4"]["x"],  grid["O4"]["y"],  grid["O4"]["z"]),
+        Point(grid["O5"]["x"],  grid["O5"]["y"],  grid["O5"]["z"]),
+        Point(grid["O6"]["x"],  grid["O6"]["y"],  grid["O6"]["z"]),
+        Point(grid["O7"]["x"],  grid["O7"]["y"],  grid["O7"]["z"]),
+        Point(grid["O8"]["x"],  grid["O8"]["y"],  grid["O8"]["z"]),
+        Point(grid["O9"]["x"],  grid["O9"]["y"],  grid["O9"]["z"]),
+        Point(grid["O10"]["x"], grid["O10"]["y"], grid["O10"]["z"]),
+        Point(grid["O11"]["x"], grid["O11"]["y"], grid["O11"]["z"]),
+        Point(grid["O12"]["x"], grid["O12"]["y"], grid["O12"]["z"])
+    };
 }
