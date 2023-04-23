@@ -12,7 +12,7 @@ Params::Params()
     
     //simulation parameters
     m_initial_T = params["INITIAL_T"];
-    m_initial_n = params["INITIAL_n"]; //n of saturated steam
+    m_initial_n = params["INITIAL_n"];
 
     m_freeze_P0 = params["FREEZE_P0"];
     m_melt_P0 = params["MELT_P0"];
@@ -25,21 +25,16 @@ Params::Params()
     m_vapor_C0 = params["VAPOR_C0"];
     m_ice_C0 = params["ICE_C0"];
 
-    // FIXME(Ivan): Add definitions!
-    /*
-    m_cell_distance = params["CELL_DISTANCE"];
-    m_cell_area = sqrt(3) / 4 * std::pow(m_cell_distance);
-    m_cell_volume = 1 / (6 std::sqrt(2)) * std::pow(m_cell_distance, 3);
+    m_cell_side_length = params["CELL_SIDE_LENGTH"];
+    m_cell_area_side = sqrt(3) * std::pow(m_cell_side_length, 2);
+    m_cell_area_top = (3 * sqrt(3)) / 4 * std::pow(m_cell_side_length, 2);
+    m_cell_volume = (3 * sqrt(3)) / 4 * std::pow(m_cell_side_length, 3);
 
-    m_surf_area = params["SURF_AREA"]
-
-    //physical constants
     m_ice_N = params["ICE_N"];
 
     m_terrace_step_energy = params["TERRACE_STEP_ENERGY"];
 
     m_k_boltzmann = params["K_BOLTZMANN"];
-    */
 }
 
 Params* Params::This()
@@ -60,13 +55,12 @@ float Params::n()
 
 float Params::FreezeP(Point* p)
 {
-    // FIXME(Ivan): Add definitions!
-    /*
+
     float prob;
-    prob = (p->n) / (This->m_ice_N) * (m_cell_area * m_terrace_step_energy * m_terrace_step_energy) 
-    / (std::pow(This->m_k_boltzmann, 2) * std::pow(p->T, 2));
-    */
-    return This()->m_freeze_P0;
+    /*prob = (p->n) / (This()->m_ice_N) * (This()->m_cell_area_side * This()->m_terrace_step_energy * This()->m_terrace_step_energy) 
+    / (std::pow(This()->m_k_boltzmann, 2) * std::pow(p->T, 2));*/
+    prob = This()->m_freeze_P0 * std::pow(This()->m_terrace_step_energy, 2) / std::pow(p->T, 2);
+    return prob;
 }
 
 float Params::MeltP(Point* p)

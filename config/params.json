@@ -11,12 +11,12 @@
     "ICE_K0": 0,
     "TRANS_K0": 0,
 
-    "CELL_DISTANCE": 1,
+    "CELL_SIDE_LENGTH": 1,
 
     "VAPOR_C0": 1,
     "ICE_C0": 1,
 
     "K_BOLTZMANN": 1,
 
-    "TERRACE_STEP_ENERGY": 1
+    "TERRACE_STEP_ENERGY": 400
 }
