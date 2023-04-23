@@ -24,7 +24,12 @@ int main(int argc, char** argv)
     if (argc > 1)
         iter_num = atoi(argv[1]);
 
-    std::cout << "Simulaiton started.\n";
+    if (iter_num == 0)
+    {
+        std::cout << "No iters for simultion, only mesh was snapshoted.";
+        return 0;
+    }
+    std::cout << "Simulation started.\n";
 
     for (int iter = 1; iter <= iter_num; ++iter) {
 
@@ -124,5 +129,6 @@ int main(int argc, char** argv)
         std::cout << "Iteration " << iter << " finished.\n";
     }
 
+    std::cout << "Simulation finished.\n";
     return 0;
 }
