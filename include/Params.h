@@ -5,8 +5,8 @@ class Params
 private:
     const char* m_path = "../config/params.json";
 
-    float m_initial_T;        // initial tempurature
-    float m_initial_n;        // initial humidity
+    float m_initial_T;                  //tempurature
+    float m_initial_n;                  //humidity
 
     float m_freeze_P0;        // base probability of freezing
     float m_melt_P0;          // base probability of melting

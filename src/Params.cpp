@@ -4,13 +4,14 @@
 
 #include <fstream>
 #include <cmath>
+#include <algorithm>
 
 Params::Params()
 {
     std::ifstream f(m_path);
     nlohmann::json params = nlohmann::json::parse(f);
     
-    //simulation parameters
+     //simulation parameters
     m_initial_T = params["INITIAL_T"];
     m_initial_n = params["INITIAL_n"];
 
@@ -55,17 +56,18 @@ float Params::n()
 
 float Params::FreezeP(Point* p)
 {
-
-    float prob;
-    /*prob = (p->n) / (This()->m_ice_N) * (This()->m_cell_area_side * This()->m_terrace_step_energy * This()->m_terrace_step_energy) 
-    / (std::pow(This()->m_k_boltzmann, 2) * std::pow(p->T, 2));*/
-    prob = This()->m_freeze_P0 * std::pow(This()->m_terrace_step_energy, 2) / std::pow(p->T, 2);
-    return prob;
+    return This()->m_freeze_P0 * std::pow(This()->m_terrace_step_energy, 2) / std::pow(p->T, 2);
 }
 
 float Params::MeltP(Point* p)
 {
-    return This()->m_melt_P0;
+    if (p->IsFreezed() == 0)
+        return 0;
+    else
+        if (p->T >= 273)
+            return (This()->m_melt_P0 * (p->T - 273) > 1 ? 1 : This()->m_melt_P0 * (p->T - 273));
+        else
+            return 0;
 }
 
 float Params::IceN() {
