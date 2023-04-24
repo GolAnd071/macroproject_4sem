@@ -1,3 +1,7 @@
+[![License](https://img.shields.io/github/license/GolAnd071/macroproject_4sem)](https://github.com/GolAnd071/macroproject_4sem/blob/master/LICENSE)
+[![VTK](https://img.shields.io/badge/VTK-v9.2.6-blue)](https://vtk.org)
+![Platform](https://img.shields.io/badge/platform-windows%20%7C%20linux%20%7C%20osx-lightgrey)
+
 # Project "Snowflake"
 
 This is the final project of a programming course at MIPT.
