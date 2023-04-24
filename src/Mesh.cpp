@@ -5,14 +5,27 @@
 #include <cmath>
 #include <fstream>
 
-Mesh::Mesh(int nx, int ny, int nz, float n, float T) {
+Mesh::Mesh(int length, int height, float n, float T) {
     Init();
 
-    for (int i = 0; i < nx; ++i)
-        for (int j = 0; j < ny; ++j)
-            for (int k = 0; k < nz; ++k)
-                for (int l = 0; l < m_basicCell.size(); ++l)
-                    points.push_back(new Point(m_basicCell[l].x + i / 3.0f, m_basicCell[l].y + j / 3.0f, m_basicCell[l].z + k / 3.0f, n, T));
+    length *= 2;
+
+    for (int i = -length; i <= length; ++i)
+        for (int j = -length; j <= length; ++j)
+            for (int k = -height; k <= height; ++k)
+                for (int l = 0; l < m_basicCell.size(); ++l) {
+                    Point temp = m_basicCell[l];
+
+                    temp.x += i / 3.0f;
+                    temp.y += j / 3.0f;
+                    temp.z += k / 3.0f;
+
+                    if (std::abs(temp.x - temp.y) < length / 3.0f + m_eps &&
+                        std::abs(temp.x) < length / 3.0f + m_eps &&
+                        std::abs(temp.y) < length / 3.0f + m_eps &&
+                        std::abs(temp.z) < height / 3.0f + m_eps)
+                        points.push_back(new Point(temp.x, temp.y, temp.z, n, T));
+                }
 
     Point aVec(m_a, 0.0f, 0.0f);
     Point bVec(m_b * cosf(m_gamma), m_b * sinf(m_gamma), 0.0f);
