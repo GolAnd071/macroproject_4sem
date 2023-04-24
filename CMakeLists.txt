@@ -12,6 +12,7 @@ set(SOURCE_FILES
     src/Mesh.cpp
     src/Params.cpp
     src/Point.cpp
+    src/Simulation.cpp
     src/Utility.cpp
     )
 
@@ -20,9 +21,13 @@ set(INCLUDE_DIRS
     vendor/
     )
 
-add_compile_definitions(_USE_MATH_DEFINES)
-
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
+target_compile_definitions(
+    ${PROJECT_NAME} PRIVATE
+        $<$<CONFIG:Debug>:ENABLE_PROFILING>
+        _USE_MATH_DEFINES
+)
 
 target_link_libraries(${PROJECT_NAME} ${VTK_LIBRARIES})
 
