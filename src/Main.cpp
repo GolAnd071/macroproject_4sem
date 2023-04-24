@@ -11,7 +11,7 @@
 
 int main(int argc, char** argv)
 {
-    Mesh* mesh = new Mesh(5, 5, 5, Params::n(), Params::T());
+    Mesh* mesh = new Mesh(5, 5, Params::n(), Params::T());
     mesh->points.at(mesh->size/2)->Seed();
     Utility::Snapshot(0, mesh);
 

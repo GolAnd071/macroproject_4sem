@@ -8,7 +8,7 @@
 class Mesh
 {
 public:
-    Mesh(int nx, int ny, int nz, float n, float T);
+    Mesh(int length, int height, float n, float T);
 
 public:
     int size;
