@@ -86,7 +86,7 @@ int main(int argc, char** argv)
             fulfilledLoan.insert(point);
 
             if (point->n < 0) {
-                int num = mesh->neighbors[point].size();
+                size_t num = mesh->neighbors[point].size();
 
                 for (Point* neighbor : mesh->neighbors[point]) {
                     if (fulfilledLoan.count(neighbor))

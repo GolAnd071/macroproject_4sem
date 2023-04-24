@@ -64,9 +64,9 @@ void Mesh::Init()
     m_beta = grid["beta"];
     m_gamma = grid["gamma"];
 
-    m_alpha *= M_PI / 180.0f;
-    m_beta *= M_PI / 180.0f;
-    m_gamma *= M_PI / 180.0f;
+    m_alpha *= (float)M_PI / 180.0f;
+    m_beta *= (float)M_PI / 180.0f;
+    m_gamma *= (float)M_PI / 180.0f;
 
     m_l = grid["l"];
     m_eps = grid["eps"];

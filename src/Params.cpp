@@ -27,9 +27,9 @@ Params::Params()
     m_ice_C0 = params["ICE_C0"];
 
     m_cell_side_length = params["CELL_SIDE_LENGTH"];
-    m_cell_area_side = sqrt(3) * std::pow(m_cell_side_length, 2);
-    m_cell_area_top = (3 * sqrt(3)) / 4 * std::pow(m_cell_side_length, 2);
-    m_cell_volume = (3 * sqrt(3)) / 4 * std::pow(m_cell_side_length, 3);
+    m_cell_area_side = std::sqrtf(3) * std::powf(m_cell_side_length, 2);
+    m_cell_area_top = (3 * std::sqrtf(3)) / 4 * std::powf(m_cell_side_length, 2);
+    m_cell_volume = (3 * std::sqrtf(3)) / 4 * std::powf(m_cell_side_length, 3);
 
     m_ice_N = params["ICE_N"];
 
@@ -56,7 +56,7 @@ float Params::n()
 
 float Params::FreezeP(Point* p)
 {
-    return This()->m_freeze_P0 * std::pow(This()->m_terrace_step_energy, 2) / std::pow(p->T, 2);
+    return This()->m_freeze_P0 * std::powf(This()->m_terrace_step_energy, 2) / std::powf(p->T, 2);
 }
 
 float Params::MeltP(Point* p)
