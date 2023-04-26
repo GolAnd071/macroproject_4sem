@@ -153,7 +153,7 @@ void Simulation::FulfillConcentration()
 		fulfilledLoan.insert(point);
 
 		if (point->n < 0) {
-			size_t num = m_Mesh->neighbors[point].size();
+			std::size_t num = m_Mesh->neighbors[point].size();
 
 			for (Point* neighbor : m_Mesh->neighbors[point]) {
 				if (fulfilledLoan.count(neighbor))

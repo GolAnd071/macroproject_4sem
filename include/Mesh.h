@@ -11,7 +11,7 @@ public:
     Mesh(int length, int height, float n, float T);
 
 public:
-    size_t size;
+    std::size_t size;
     std::vector<Point*> points;
     std::map<Point*, std::vector<Point*>> neighbors;
 
