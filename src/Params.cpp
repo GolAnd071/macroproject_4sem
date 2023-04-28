@@ -56,7 +56,7 @@ float Params::n()
 
 float Params::FreezeP(Point* p)
 {
-    return This()->m_freeze_P0 * (float)std::pow(This()->m_terrace_step_energy, 2) / (float)std::pow(p->T, 2);
+    return This()->m_freeze_P0 * p->n * (float)std::pow(This()->m_terrace_step_energy, 2) / (float)std::pow(p->T, 2);
 }
 
 float Params::MeltP(Point* p)
