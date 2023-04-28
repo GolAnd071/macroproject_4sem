@@ -36,7 +36,7 @@ private:
 
 	int m_IterNum;
 
-	std::queue<Point*> m_HasLoan;
+	// std::queue<Point*> m_HasLoan;
 
 	std::map<Point*, float> m_DeltaN, m_DeltaH;
 };

@@ -49,7 +49,7 @@ void Simulation::Run()
 
 		FreezeMelt();
 
-		FulfillConcentration();
+		//FulfillConcentration();
 
 		CalculateFlows();
 
@@ -61,7 +61,8 @@ void Simulation::Run()
 
 	#ifdef ENABLE_PROFILING
 		std::cout << "Snapshoted iteration " << iter << ".\n";
-
+	#endif
+	#if defined(ENABLE_PROFILING) || defined(ENABLE_PERCENTAGE_OUTPUT)
 		std::cout << "Iteration " << iter << " ended.\n";
 	#endif
 	}
@@ -95,7 +96,7 @@ void Simulation::FreezeMelt()
 	std::cout << "Started mesh traversal to freeze and melt.\n";
 #endif
 
-	std::vector<Point*> wantFreeze, wantMelt;
+	std::vector<Point*> pointsToFreeze, pointsToMelt;
 
 	for (Point* point : m_Mesh->points) {
 		float prob = m_Dist(m_Gen);
@@ -107,8 +108,8 @@ void Simulation::FreezeMelt()
 				if (!neighbor->IsFreezed())
 					++countVapor;
 
-			if (countVapor > 0 && prob < Params::MeltP(point))
-				wantMelt.push_back(point);
+			if (prob < Params::MeltP(point) && countVapor > 0)
+				pointsToMelt.push_back(point);
 
 		}
 		else {
@@ -119,19 +120,35 @@ void Simulation::FreezeMelt()
 					++countIce;
 
 			if (prob < Params::FreezeP(point) * countIce)
-				wantFreeze.push_back(point);
+				pointsToFreeze.push_back(point);
 		}
 	}
 
-	for (auto point : wantFreeze) {
-		point->Freeze();
-		point->n -= Params::IceN();
-		m_HasLoan.push(point);
+	for (auto point : pointsToFreeze) {
+		std::vector<Point*> neighborsToPump;
+		
+		// only vapor points that wont be freezed but will be neighbors to freezed
+		for (auto neighbor : m_Mesh->neighbors[point]) {
+			if (std::find(pointsToMelt.begin(), pointsToMelt.end(), neighbor) != pointsToMelt.end()
+				or (!neighbor->IsFreezed() and 
+				std::find(pointsToFreeze.begin(), pointsToFreeze.end(), neighbor) == pointsToFreeze.end())) {
+					
+				neighborsToPump.push_back(neighbor);
+			}
+		}
+
+		for (auto neighbor : neighborsToPump)
+			neighbor->n -= point->n / neighborsToPump.size();
 	}
 
-	for (auto point : wantMelt) {
+	for (auto point : pointsToFreeze) {
+		point->Freeze();
+		point->n = 0;
+	}
+
+	for (auto point : pointsToMelt) {
 		point->Melt();
-		point->n += Params::IceN();
+		point->n = Params::IceN();
 	}
 
 #ifdef ENABLE_PROFILING
@@ -145,30 +162,7 @@ void Simulation::FulfillConcentration()
 	std::cout << "Started mesh traversal to fulfill concentration loan after freezing.\n";
 #endif
 
-	std::unordered_set<Point*> fulfilledLoan;
-
-	while (m_HasLoan.size() != 0) {
-		Point* point = m_HasLoan.front();
-		m_HasLoan.pop();
-		fulfilledLoan.insert(point);
-
-		if (point->n < 0) {
-			std::size_t num = 0;
-
-			for (Point* neighbor : m_Mesh->neighbors[point])
-				if (!(fulfilledLoan.count(neighbor) || neighbor->IsFreezed()))
-					++num;
-
-			for (Point* neighbor : m_Mesh->neighbors[point]) {
-				if (fulfilledLoan.count(neighbor) || neighbor->IsFreezed())
-					continue;
-				neighbor->n += point->n / num;
-				//m_HasLoan.push(neighbor);
-			}
-
-			point->n = 0;
-		}
-	}
+	// code has been changed and moved to Simlutation::FreezeMelt()
 
 #ifdef ENABLE_PROFILING
 	std::cout << "Ended mesh traversal to fulfill concentration loan after freezing.\n";
@@ -216,9 +210,6 @@ void Simulation::Update()
 
 void Simulation::ClearVariables()
 {
-	// m_HasLoan needn't to be cleared 'cause 
-	//we waited for its emptiness in the loop
-
 	m_DeltaH.clear();
 	m_DeltaN.clear();
 }

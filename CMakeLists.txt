@@ -26,6 +26,7 @@ add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_compile_definitions(
     ${PROJECT_NAME} PRIVATE
         $<$<CONFIG:Debug>:ENABLE_PROFILING>
+        ENABLE_PERCENTAGE_OUTPUT
         _USE_MATH_DEFINES
 )
 

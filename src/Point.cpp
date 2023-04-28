@@ -22,6 +22,7 @@ void Point::Seed()
 {
     m_meltable = true;
     m_freezed = true;
+    n = 0;
 }
 
 float Point::Dist(Point* other)
