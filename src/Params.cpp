@@ -61,7 +61,7 @@ float Params::FreezeP(Point* p)
 
 float Params::MeltP(Point* p)
 {
-    if (p->IsFreezed() == 0)
+    if (p->IsFreezed() == 0) // ha-ha what? :D
         return 0;
     else
         if (p->T >= 273)

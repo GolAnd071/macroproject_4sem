@@ -126,7 +126,7 @@ void Simulation::FreezeMelt()
 
 	for (auto point : pointsToFreeze) {
 		std::vector<Point*> neighborsToPump;
-		
+
 		// only vapor points that wont be freezed but will be neighbors to freezed
 		for (auto neighbor : m_Mesh->neighbors[point]) {
 			if (std::find(pointsToMelt.begin(), pointsToMelt.end(), neighbor) != pointsToMelt.end()
@@ -138,7 +138,7 @@ void Simulation::FreezeMelt()
 		}
 
 		for (auto neighbor : neighborsToPump)
-			neighbor->n -= point->n / neighborsToPump.size();
+			neighbor->n -= (Params::IceN() - point->n) / neighborsToPump.size();
 	}
 
 	for (auto point : pointsToFreeze) {
@@ -199,7 +199,7 @@ void Simulation::Update()
 #endif
 
 	for (Point* point : m_Mesh->points) {
-		Params::Diffuse(point, m_DeltaN[point]);
+		Params::Diffuse(point, m_DeltaN[point]); // BUG!!
 		Params::Heat(point, m_DeltaH[point]);
 	}
 
