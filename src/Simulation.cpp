@@ -82,7 +82,7 @@ void Simulation::InitMesh()
 
 	// TODO: Make freezed point closest to (0, 0, 0)
 	auto freeze = m_Mesh->points.at(m_Mesh->size / 2);
-	m_Mesh->points.at(m_Mesh->size / 2)->Seed();
+	m_Mesh->points.at(m_Mesh->size / 3)->Seed();
 
 #ifdef ENABLE_PROFILING
 	std::cout << "Constructed Mesh, freezed point (" <<
@@ -199,7 +199,7 @@ void Simulation::Update()
 #endif
 
 	for (Point* point : m_Mesh->points) {
-		Params::Diffuse(point, m_DeltaN[point]); // BUG!!
+		Params::Diffuse(point, m_DeltaN[point]);
 		Params::Heat(point, m_DeltaH[point]);
 	}
 

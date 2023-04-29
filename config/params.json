@@ -4,9 +4,9 @@
 
     "FREEZE_P0": 0.3,
     "MELT_P0": 0,
-    "ICE_N": 423.228, 
+    "ICE_N": 10, 
 
-    "VAPOR_D0": 1,
+    "VAPOR_D0": 0.1,
     "VAPOR_K0": 0,
     "ICE_K0": 0,
     "TRANS_K0": 0,
