@@ -129,8 +129,8 @@ void Simulation::FreezeMelt()
 
 		// only vapor points that wont be freezed but will be neighbors to freezed
 		for (auto neighbor : m_Mesh->neighbors[point]) {
-			if (std::find(pointsToMelt.begin(), pointsToMelt.end(), neighbor) != pointsToMelt.end()
-				or (!neighbor->IsFreezed() and 
+			if (std::find(pointsToMelt.begin(), pointsToMelt.end(), neighbor) != pointsToMelt.end() || 
+				(!neighbor->IsFreezed() && 
 				std::find(pointsToFreeze.begin(), pointsToFreeze.end(), neighbor) == pointsToFreeze.end())) {
 					
 				neighborsToPump.push_back(neighbor);
