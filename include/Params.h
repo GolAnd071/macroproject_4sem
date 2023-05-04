@@ -5,22 +5,22 @@ class Params
 private:
     const char* m_path = "../config/params.json";
 
-    float m_initial_T;                  //tempurature
-    float m_initial_n;                  //humidity
+    float m_initial_T;                  //tempurature (~273 K)
+    float m_initial_n;                  //humidity (~1.62 * 10^26)
 
-    float m_freeze_P0;        // base probability of freezing
-    float m_melt_P0;          // base probability of melting
-    float m_ice_N;            // density of ice in relation to water vapor density
+    float m_freeze_P0;        // base probability of freezing (~0.3)
+    float m_melt_P0;          // base probability of melting (~0.3)
+    float m_ice_N;            // density of ice in relation to water vapor density (~3.011 * 10^28)
 
-    float m_vapor_D0;         // base of diffusion coefficient for vapor
-    float m_vapor_K0;         // base of thermal conductivity coefficient for vapor
-    float m_trans_K0;         // base of thermal conductivity coefficient for vapor-ice surface
-    float m_ice_K0;           // base of thermal conductivity coefficient for ice
+    float m_vapor_D0;         // base of diffusion coefficient for vapor (~0.21)
+    float m_vapor_K0;         // base of thermal conductivity coefficient for vapor (~0.6)
+    float m_trans_K0;         // base of thermal conductivity coefficient for vapor-ice surface (~0.6)
+    float m_ice_K0;           // base of thermal conductivity coefficient for ice (~2.1)
 
-    float m_vapor_C0;         // base of heat capacity for vapor
-    float m_ice_C0;           // base of heat capacuty for ice
+    float m_vapor_C0;         // base of heat capacity for vapor (5/2 n k T m_mol)
+    float m_ice_C0;           // base of heat capacuty for ice (~2050)
 
-    float m_cell_side_length; //distance between vertices in a grid 
+    float m_cell_side_length; //distance between vertices in a grid (~20 micrometer)
     float m_cell_area_side;   //area of the side face of a cell
     float m_cell_area_top;    //area of the top face of a cell
     float m_cell_volume;      //voLume of a cell
