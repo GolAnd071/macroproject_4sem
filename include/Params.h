@@ -6,18 +6,18 @@ private:
     const char* m_path = "../config/params.json";
 
     float m_initial_T;                  //tempurature (~273 K)
-    float m_initial_n;                  //humidity (~1.62 * 10^26)
+    float m_initial_n;                  //humidity (~2.69 * 10^2) in moles
 
     float m_freeze_P0;        // base probability of freezing (~0.3)
     float m_melt_P0;          // base probability of melting (~0.3)
-    float m_ice_N;            // density of ice in relation to water vapor density (~3.011 * 10^28)
+    float m_ice_N;            // density of ice (~5 * 10^4)
 
     float m_vapor_D0;         // base of diffusion coefficient for vapor (~0.21)
     float m_vapor_K0;         // base of thermal conductivity coefficient for vapor (~0.6)
     float m_trans_K0;         // base of thermal conductivity coefficient for vapor-ice surface (~0.6)
     float m_ice_K0;           // base of thermal conductivity coefficient for ice (~2.1)
 
-    float m_vapor_C0;         // base of heat capacity for vapor (5/2 n k T m_mol)
+    float m_vapor_C0;         // base of heat capacity for vapor (3/2 n k T m_mol)
     float m_ice_C0;           // base of heat capacuty for ice (~2050)
 
     float m_cell_side_length; //distance between vertices in a grid (~20 micrometer)
@@ -29,6 +29,8 @@ private:
 
     float m_k_boltzmann;      //Boltzmann's constant
 
+    float m_timestep; //timestep in seconds
+
     Params();
 
     static Params* This();
@@ -38,6 +40,14 @@ public:
     static float T();
     // initial humidity
     static float n();
+
+    static float Vapor_D(Point* p1, Point* p2);
+
+    static float Vapor_K(Point* p1, Point* p2);
+
+    static float Trans_K(Point* p1, Point* p2);
+
+    static float Vapor_C(Point* p);
 
     // local probability of freezing while neighbouring one freezed point
     static float FreezeP(Point* p);

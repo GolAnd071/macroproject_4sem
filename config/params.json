@@ -1,22 +1,24 @@
 {
     "INITIAL_T": 273,
-    "INITIAL_n": 2.238, 
+    "INITIAL_n": 269, 
 
     "FREEZE_P0": 0.3,
-    "MELT_P0": 0,
-    "ICE_N": 10,  
+    "MELT_P0": 0.3,
+    "ICE_N": 5000,  
 
-    "VAPOR_D0": 0.1,
-    "VAPOR_K0": 0,
-    "ICE_K0": 0,
-    "TRANS_K0": 0,
+    "VAPOR_D0": 0.21,
+    "VAPOR_K0": 0.6,
+    "TRANS_K0": 0.6,
+    "ICE_K0": 2.1,
 
-    "CELL_SIDE_LENGTH": 1,
+    "CELL_SIDE_LENGTH": 20e-6,
 
-    "VAPOR_C0": 1,
-    "ICE_C0": 1,
+    "VAPOR_C0": 0.027,
+    "ICE_C0": 2050,
 
-    "K_BOLTZMANN": 1,
+    "K_BOLTZMANN": 8.31,
 
-    "TERRACE_STEP_ENERGY": 400
+    "TERRACE_STEP_ENERGY": 400,
+
+    "TIMESTEP": 100
 }
