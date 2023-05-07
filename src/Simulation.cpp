@@ -63,12 +63,12 @@ void Simulation::Run()
 		std::cout << "Snapshoted iteration " << iter << ".\n";
 	#endif
 	#if defined(ENABLE_PROFILING) || defined(ENABLE_PERCENTAGE_OUTPUT)
-		std::cout << "Iteration " << iter << " ended.\n";
+		std::cout << "Iteration " << iter << " completed.\n";
 	#endif
 	}
 
 #ifdef ENABLE_PROFILING
-	std::cout << "Simulation ended.\n";
+	std::cout << "Simulation completed.\n";
 #endif
 }
 
@@ -80,13 +80,14 @@ void Simulation::InitMesh()
 
 	m_Mesh = new Mesh(5, 5, Params::n(), Params::T());
 
-	// TODO: Make freezed point closest to (0, 0, 0)
-	auto freeze = m_Mesh->points.at(m_Mesh->size / 2);
-	m_Mesh->points.at(m_Mesh->size / 3)->Seed();
+	const float EPS = 2.6503f;
+
+	for (auto& point : m_Mesh->points)
+		if (point->Dist(&Point(0, 0, 0)) < EPS)
+			point->Seed();
 
 #ifdef ENABLE_PROFILING
-	std::cout << "Constructed Mesh, freezed point (" <<
-		freeze->x << ", " << freeze->y << ", " << freeze->z << ").\n";
+	std::cout << "Completed Mesh construction.\n";
 #endif
 }
 
@@ -152,7 +153,7 @@ void Simulation::FreezeMelt()
 	}
 
 #ifdef ENABLE_PROFILING
-	std::cout << "Ended mesh traversal to freeze and melt.\n";
+	std::cout << "Completed mesh traversal to freeze and melt.\n";
 #endif
 }
 
@@ -165,7 +166,7 @@ void Simulation::FulfillConcentration()
 	// code has been changed and moved to Simlutation::FreezeMelt()
 
 #ifdef ENABLE_PROFILING
-	std::cout << "Ended mesh traversal to fulfill concentration loan after freezing.\n";
+	std::cout << "Completed mesh traversal to fulfill concentration loan after freezing.\n";
 #endif
 }
 
@@ -188,7 +189,7 @@ void Simulation::CalculateFlows()
 	}
 
 #ifdef ENABLE_PROFILING
-	std::cout << "Ended mesh traversal to calculate concentration and temperature flow for each edge.\n";
+	std::cout << "Completed mesh traversal to calculate concentration and temperature flow for each edge.\n";
 #endif
 }
 
@@ -204,7 +205,7 @@ void Simulation::Update()
 	}
 
 #ifdef ENABLE_PROFILING
-	std::cout << "Ended mesh traversal to update concentration and temperature.\n";
+	std::cout << "Completed mesh traversal to update concentration and temperature.\n";
 #endif
 }
 

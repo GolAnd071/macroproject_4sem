@@ -1,2 +1,7 @@
+# Visual Studio files
+.vs
 .vscode
+
+# build files
+out
 build
