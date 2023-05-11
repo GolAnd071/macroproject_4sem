@@ -82,9 +82,13 @@ void Simulation::InitMesh()
 
 	const float EPS = 2.6503f;
 
+	Point* center = new Point(0, 0, 0);
+
 	for (auto& point : m_Mesh->points)
-		if (point->Dist(&Point(0, 0, 0)) < EPS)
+		if (point->Dist(center) < EPS)
 			point->Seed();
+
+	delete center;
 
 #ifdef ENABLE_PROFILING
 	std::cout << "Completed Mesh construction.\n";
