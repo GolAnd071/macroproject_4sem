@@ -35,6 +35,7 @@ private:
 	std::uniform_real_distribution<> m_Dist;
 
 	int m_IterNum;
+	int m_Snapshot_freq = 1;
 
 	// std::queue<Point*> m_HasLoan;
 

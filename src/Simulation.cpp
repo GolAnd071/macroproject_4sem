@@ -21,6 +21,8 @@ Simulation::Simulation(int argc, char** argv) : m_IterNum(0)
 
 	if (argc > 1)
 		m_IterNum = atoi(argv[1]);
+	if (argc > 2)
+		m_Snapshot_freq = atoi(argv[2]);
 
 #ifdef ENABLE_PROFILING
 	std::cout << "Initialized Simulation with " << m_IterNum << " iterations.\n\n";
@@ -57,14 +59,16 @@ void Simulation::Run()
 
 		ClearVariables();
 
-		Utility::Snapshot(iter, m_Mesh);
+		if (iter % m_Snapshot_freq == 0) {
+			Utility::Snapshot(iter/m_Snapshot_freq, m_Mesh);
 
-	#ifdef ENABLE_PROFILING
-		std::cout << "Snapshoted iteration " << iter << ".\n";
-	#endif
-	#if defined(ENABLE_PROFILING) || defined(ENABLE_PERCENTAGE_OUTPUT)
-		std::cout << "Iteration " << iter << " completed.\n";
-	#endif
+			#ifdef ENABLE_PROFILING
+				std::cout << "Snapshoted iteration " << iter << ".\n";
+			#endif
+		}
+		#if defined(ENABLE_PROFILING) || defined(ENABLE_PERCENTAGE_OUTPUT)
+			std::cout << "Iteration " << iter << " completed.\n";
+		#endif
 	}
 
 #ifdef ENABLE_PROFILING
@@ -78,7 +82,7 @@ void Simulation::InitMesh()
 	std::cout << "Started Mesh construction.\n";
 #endif
 
-	m_Mesh = new Mesh(5, 5, Params::n(), Params::T());
+	m_Mesh = new Mesh(Params::length(), Params::height(), Params::n(), Params::T());
 
 	const float EPS = 2.6503f;
 
@@ -203,12 +207,14 @@ void Simulation::Update()
 	std::cout << "Started mesh traversal to update concentration and temperature.\n";
 #endif
 
+	float full_n;
 	for (Point* point : m_Mesh->points) {
 		Params::Diffuse(point, m_DeltaN[point]);
 		Params::Heat(point, m_DeltaH[point]);
+		full_n += point->n;
 	}
-
 #ifdef ENABLE_PROFILING
+	std::cout << " N = " << full_n << "\n"; 
 	std::cout << "Completed mesh traversal to update concentration and temperature.\n";
 #endif
 }

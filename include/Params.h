@@ -5,6 +5,9 @@ class Params
 private:
     const char* m_path = "../config/params.json";
 
+    float m_length;
+    float m_height;
+
     float m_initial_T;                  //tempurature (~273 K)
     float m_initial_n;                  //humidity (~2.69 * 10^2) in moles
 
@@ -36,6 +39,8 @@ private:
     static Params* This();
 
 public:
+    static float length();
+    static float height();
     // initial tempurature
     static float T();
     // initial humidity

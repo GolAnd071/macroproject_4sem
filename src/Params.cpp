@@ -11,7 +11,11 @@ Params::Params()
     std::ifstream f(m_path);
     nlohmann::json params = nlohmann::json::parse(f);
     
-     //simulation parameters
+    // simulation parameters
+    m_length = params["LENGTH"];
+    m_height = params["HEIGHT"];
+
+
     m_initial_T = params["INITIAL_T"];
     m_initial_n = params["INITIAL_n"];
 
@@ -44,6 +48,16 @@ Params* Params::This()
 {
     static Params inst;
     return &inst;
+}
+
+float Params::length()
+{
+    return This()->m_length;
+}
+
+float Params::height()
+{
+    return This()->m_height;
 }
 
 float Params::T()
