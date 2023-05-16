@@ -216,7 +216,7 @@ bool Simulation::Update()
 		Params::Heat(point, m_DeltaH[point]);
 		full_n += point->n;
 	}
-	return full_n > 0
+	return full_n > 0;
 #ifdef ENABLE_PROFILING
 	std::cout << " N = " << full_n << "\n"; 
 	std::cout << "Completed mesh traversal to update concentration and temperature.\n";
