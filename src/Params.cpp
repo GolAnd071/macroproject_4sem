@@ -11,10 +11,14 @@ Params::Params()
     std::ifstream f(m_path);
     nlohmann::json params = nlohmann::json::parse(f);
     
-    // simulation parameters
+    // size parameters
     m_length = params["LENGTH"];
     m_height = params["HEIGHT"];
 
+    m_seed_r = params["SEED_R"];
+
+    // simulation parameters
+    m_bc_enabled = params["BC_ENABLED"];
 
     m_initial_T = params["INITIAL_T"];
     m_initial_n = params["INITIAL_n"];
@@ -48,6 +52,16 @@ Params* Params::This()
 {
     static Params inst;
     return &inst;
+}
+
+bool Params::BCEnabled()
+{
+    return This()->m_bc_enabled;
+}
+
+float Params::SeedR()
+{
+    return This()->m_seed_r;
 }
 
 float Params::length()

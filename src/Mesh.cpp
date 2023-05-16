@@ -31,7 +31,7 @@ Mesh::Mesh(int length, int height, float n, float T) {
     Point bVec(m_b * cosf(m_gamma), m_b * sinf(m_gamma), 0.0f);
     Point cVec(m_c * cosf(m_beta), m_c * cosf(m_alpha) * sinf(m_gamma), m_c * sqrtf(sinf(m_beta) * sinf(m_beta) - sinf(m_gamma) * sinf(m_gamma) * cosf(m_alpha) * cosf(m_alpha)));
 
-    for (auto& point : points) {
+    for (auto point : points) {
         auto old_x = point->x;
         auto old_y = point->y;
         auto old_z = point->z;
@@ -49,6 +49,9 @@ Mesh::Mesh(int length, int height, float n, float T) {
                 neighbors[points[p1]].push_back(points[p2]);
                 neighbors[points[p2]].push_back(points[p1]);
             }
+
+    for (auto point : points)
+        point->regular = neighbors[point].size() == 4;
 }
 
 void Mesh::Init()

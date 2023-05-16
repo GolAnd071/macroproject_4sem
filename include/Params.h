@@ -5,6 +5,10 @@ class Params
 private:
     const char* m_path = "../config/params.json";
 
+    bool m_bc_enabled;
+
+    float m_seed_r;           // base of seed radius
+
     float m_length;
     float m_height;
 
@@ -39,6 +43,12 @@ private:
     static Params* This();
 
 public:
+    // flag for holding const n on border
+    static bool BCEnabled();
+    
+    static float SeedR();
+
+    // sizes in terms of basic cells
     static float length();
     static float height();
     // initial tempurature

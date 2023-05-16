@@ -22,6 +22,8 @@ public:
 
     float n, T; // physical params
 
+    bool regular = true; // false for boundary points
+
 private:
     // state params
     // "meltable" control what is represented: water particle or heterogeneous crystallization center (seed)

@@ -1,6 +1,10 @@
 {
-    "LENGTH": 10,
-    "HEIGHT": 10,
+    "BC_ENABLED": true,
+
+    "SEED_R": 3,
+
+    "LENGTH": 5,
+    "HEIGHT": 5,
 
     "INITIAL_T": 273,
     "INITIAL_n": 2.69, 

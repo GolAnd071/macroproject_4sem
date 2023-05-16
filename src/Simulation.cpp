@@ -70,7 +70,7 @@ void Simulation::Run()
 			#endif
 		}
 		#if defined(ENABLE_PROFILING) || defined(ENABLE_PERCENTAGE_OUTPUT)
-			std::cout << "Iteration " << iter << " completed.\n";
+			std::cout << "Iteration " << iter << "/" << m_IterNum << " completed.\n";
 		#endif
 	}
 
@@ -87,7 +87,7 @@ void Simulation::InitMesh()
 
 	m_Mesh = new Mesh(Params::length(), Params::height(), Params::n(), Params::T());
 
-	const float EPS = 2.6503f;
+	const float EPS = 2.6503f * Params::SeedR();
 
 	Point* center = new Point(0, 0, 0);
 
@@ -212,11 +212,12 @@ bool Simulation::Update()
 
 	float full_n;
 	for (Point* point : m_Mesh->points) {
-		Params::Diffuse(point, m_DeltaN[point]);
+		if (!Params::BCEnabled() || point->regular)
+			Params::Diffuse(point, m_DeltaN[point]);
 		Params::Heat(point, m_DeltaH[point]);
 		full_n += point->n;
 	}
-	return full_n > 0;
+	return full_n > 0 || Params::BCEnabled();
 #ifdef ENABLE_PROFILING
 	std::cout << " N = " << full_n << "\n"; 
 	std::cout << "Completed mesh traversal to update concentration and temperature.\n";
