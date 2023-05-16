@@ -1,13 +1,13 @@
 {
-    "LENGTH": 8,
-    "HEIGHT": 8,
+    "LENGTH": 10,
+    "HEIGHT": 10,
 
     "INITIAL_T": 273,
     "INITIAL_n": 2.69, 
 
     "FREEZE_P0": 0.3,
     "MELT_P0": 0.3,
-    "ICE_N": 200,  
+    "ICE_N": 5000,  
 
     "VAPOR_D0": 0.21,
     "VAPOR_K0": 0.6,

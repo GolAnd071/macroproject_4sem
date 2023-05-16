@@ -55,7 +55,10 @@ void Simulation::Run()
 
 		CalculateFlows();
 
-		Update();
+		if (! Update()){
+			std::cout << "Not enough vapor. Simulation is stopped.";
+			break;
+		}
 
 		ClearVariables();
 
@@ -201,7 +204,7 @@ void Simulation::CalculateFlows()
 #endif
 }
 
-void Simulation::Update()
+bool Simulation::Update()
 {
 #ifdef ENABLE_PROFILING
 	std::cout << "Started mesh traversal to update concentration and temperature.\n";
@@ -213,6 +216,7 @@ void Simulation::Update()
 		Params::Heat(point, m_DeltaH[point]);
 		full_n += point->n;
 	}
+	return full_n > 0
 #ifdef ENABLE_PROFILING
 	std::cout << " N = " << full_n << "\n"; 
 	std::cout << "Completed mesh traversal to update concentration and temperature.\n";

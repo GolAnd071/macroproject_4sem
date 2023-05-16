@@ -24,7 +24,9 @@ private:
 
 	void CalculateFlows();
 
-	void Update();
+	/// @brief updates n and T for each point
+	/// @return true if there are enough vapor (aka sum(n) > 0)
+	bool Update();
 
 	void ClearVariables();
 
