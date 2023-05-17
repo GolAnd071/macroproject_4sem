@@ -210,7 +210,7 @@ bool Simulation::Update()
 	std::cout << "Started mesh traversal to update concentration and temperature.\n";
 #endif
 
-	float full_n;
+	float full_n = 0;
 	for (Point* point : m_Mesh->points) {
 		if (!Params::BCEnabled() || point->regular)
 			Params::Diffuse(point, m_DeltaN[point]);

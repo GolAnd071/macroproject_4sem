@@ -14,6 +14,11 @@ set(SOURCE_FILES
     src/Point.cpp
     src/Simulation.cpp
     src/Utility.cpp
+    include/Mesh.h
+    include/Params.h
+    include/Point.h
+    include/Simulation.h
+    include/Utility.h
     )
 
 set(INCLUDE_DIRS
